@@ -1,60 +1,205 @@
-* { box-sizing: border-box; }
-
-body {
-  font-family: system-ui, sans-serif;
-  background: #f4f5f7;
-  margin: 0;
-  padding: 24px;
-  color: #222;
+:root {
+  --blue: #0071e3;
+  --blue-dark: #0058b3;
+  --bg: #f5f5f7;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-solid: #ffffff;
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --border: rgba(0, 0, 0, 0.08);
+  --red: #ff3b30;
+  --green: #34c759;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
-.hidden { display: none !important; }
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(180deg, #fbfbfd 0%, var(--bg) 100%);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+  min-height: 100vh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.hidden {
+  display: none !important;
+}
+
+button {
+  font-family: inherit;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* ---------------- Lobby ---------------- */
 
 #lobby-screen {
-  max-width: 420px;
+  max-width: 440px;
   margin: 0 auto;
+  padding: 64px 20px 40px;
+}
+
+#lobby-screen h1 {
+  font-size: 34px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 8px;
+  letter-spacing: -0.03em;
+}
+
+.lobby-subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin: 0 0 36px;
 }
 
 .lobby-card {
-  background: #fff;
-  border-radius: 8px;
-  padding: 16px;
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
   margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.lobby-card h2 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 14px;
 }
 
 .lobby-card input {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 13px 14px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.lobby-card button, #master-controls button, #guess-controls button {
+.lobby-card input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.12);
+}
+
+.lobby-card input::placeholder {
+  color: #aeaeb2;
+}
+
+button.primary,
+.lobby-card button,
+#master-controls button,
+#guess-controls button {
   width: 100%;
-  padding: 8px;
-  background: #4a5cff;
+  padding: 13px 16px;
+  background: var(--blue);
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+button.primary:hover,
+.lobby-card button:hover,
+#master-controls button:hover,
+#guess-controls button:hover {
+  background: var(--blue-dark);
+}
+
+button.primary:active,
+.lobby-card button:active,
+#master-controls button:active,
+#guess-controls button:active {
+  transform: scale(0.98);
 }
 
 .error {
-  color: #c0392b;
-  font-weight: bold;
+  color: var(--red);
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  min-height: 18px;
+  margin: 8px 0 0;
 }
 
+/* ---------------- Game screen ---------------- */
+
 #game-screen {
-  max-width: 700px;
+  max-width: 760px;
   margin: 0 auto;
+  padding: 24px 16px 40px;
 }
 
 .game-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 14px 20px;
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 12px;
+  z-index: 10;
+}
+
+.game-header h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.game-header h2 span {
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.game-header button {
+  background: rgba(255, 59, 48, 0.1);
+  color: var(--red);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.game-header button:hover {
+  background: rgba(255, 59, 48, 0.18);
 }
 
 .game-body {
@@ -63,46 +208,165 @@ body {
 }
 
 .players-panel {
-  width: 200px;
-  background: #fff;
-  border-radius: 8px;
-  padding: 12px;
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  height: fit-content;
 }
 
-.players-panel ul {
+.players-panel h3 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  margin: 0 0 12px;
+}
+
+#players-list {
   list-style: none;
   padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#players-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+#players-list li .badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--blue);
+  background: rgba(0, 113, 227, 0.1);
+  padding: 2px 7px;
+  border-radius: 100px;
 }
 
 .chat-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 14px;
+  min-width: 0;
 }
 
 #chat-log {
-  background: #fff;
-  border-radius: 8px;
-  padding: 12px;
-  height: 320px;
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  height: 340px;
   overflow-y: auto;
-  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 #chat-log p {
-  margin: 4px 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  padding: 9px 13px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.04);
+  max-width: 90%;
+  align-self: flex-start;
+  animation: rise 0.2s ease;
 }
 
-#master-controls, #guess-controls {
-  background: #fff;
-  border-radius: 8px;
-  padding: 12px;
+@keyframes rise {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-#master-controls input, #guess-controls input {
+#master-controls,
+#guess-controls {
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+#master-controls h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: var(--text-secondary);
+}
+
+#master-controls input,
+#guess-controls input {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 13px 14px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#master-controls input:focus,
+#guess-controls input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.12);
+}
+
+/* ---------------- Mobile ---------------- */
+
+@media (max-width: 640px) {
+  #lobby-screen {
+    padding: 40px 16px 24px;
+  }
+
+  #lobby-screen h1 {
+    font-size: 28px;
+  }
+
+  .game-body {
+    flex-direction: column;
+  }
+
+  .players-panel {
+    width: 100%;
+  }
+
+  #chat-log {
+    height: 260px;
+  }
+
+  .game-header {
+    top: 8px;
+    padding: 12px 16px;
+  }
+}
+
+/* ---------------- Reduced motion ---------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }

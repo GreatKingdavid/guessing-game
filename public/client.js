@@ -48,7 +48,18 @@ function renderPlayers(players) {
   playersList.innerHTML = '';
   players.forEach((p) => {
     const li = document.createElement('li');
-    li.textContent = `${p.name} - ${p.score} pts${p.isMaster ? ' (Master)' : ''}`;
+
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = `${p.name} · ${p.score} pts`;
+    li.appendChild(nameSpan);
+
+    if (p.isMaster) {
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = 'Master';
+      li.appendChild(badge);
+    }
+
     playersList.appendChild(li);
 
     if (p.id === myId) {
