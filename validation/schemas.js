@@ -15,7 +15,8 @@ const joinSessionSchema = Joi.object({
 const startGameSchema = Joi.object({
   sessionId: sessionIdSchema,
   question: Joi.string().trim().min(1).max(200).required(),
-  answer: Joi.string().trim().min(1).max(100).required()
+  answer: Joi.string().trim().min(1).max(100).required(),
+  hint: Joi.string().trim().max(150).allow('').optional()
 });
 
 const submitAnswerSchema = Joi.object({

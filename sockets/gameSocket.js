@@ -90,12 +90,14 @@ function registerGameSocket(io) {
 
       session.question = data.question;
       session.answer = data.answer.trim().toLowerCase();
+      session.hint = data.hint && data.hint.trim() ? data.hint.trim() : null;
       session.status = 'in_progress';
       session.locked = false;
       session.attempts = {};
 
       io.to(data.sessionId).emit('game_started', {
-        question: session.question
+        question: session.question,
+        hasHint: Boolean(session.hint)
       });
 
       clearSessionTimer(session);
@@ -139,6 +141,27 @@ function registerGameSocket(io) {
           socket.emit('out_of_guesses', { message: 'You have used all 3 attempts.' });
         }
       }
+    });
+
+    socket.on('reveal_hint', (payload) => {
+      const data = validate(leaveSessionSchema, payload, (err) => socket.emit('error_message', err));
+      if (!data) return;
+
+      const session = sessions.get(data.sessionId);
+      if (!session) {
+        socket.emit('error_message', { error: 'Session not found.' });
+        return;
+      }
+      if (session.status !== 'in_progress' || session.locked) {
+        socket.emit('error_message', { error: 'No active question right now.' });
+        return;
+      }
+      if (!session.hint) {
+        socket.emit('error_message', { error: 'No hint available for this question.' });
+        return;
+      }
+
+      socket.emit('hint_revealed', { hint: session.hint });
     });
 
     socket.on('leave_session', (payload) => {

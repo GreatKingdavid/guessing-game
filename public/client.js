@@ -17,6 +17,7 @@ const joinNameInput = document.getElementById('join-name');
 const joinBtn = document.getElementById('join-btn');
 
 const sessionIdDisplay = document.getElementById('session-id-display');
+const copySessionBtn = document.getElementById('copy-session-btn');
 const leaveBtn = document.getElementById('leave-btn');
 const playersList = document.getElementById('players-list');
 const chatLog = document.getElementById('chat-log');
@@ -24,11 +25,13 @@ const chatLog = document.getElementById('chat-log');
 const masterControls = document.getElementById('master-controls');
 const questionInput = document.getElementById('question-input');
 const answerInput = document.getElementById('answer-input');
+const hintInput = document.getElementById('hint-input');
 const startGameBtn = document.getElementById('start-game-btn');
 
 const guessControls = document.getElementById('guess-controls');
 const guessInput = document.getElementById('guess-input');
 const guessBtn = document.getElementById('guess-btn');
+const hintBtn = document.getElementById('hint-btn');
 
 // ---- Helpers ----
 function logMessage(text) {
@@ -100,15 +103,39 @@ leaveBtn.addEventListener('click', () => {
   window.location.reload();
 });
 
+copySessionBtn.addEventListener('click', async () => {
+  if (!currentSessionId) return;
+  try {
+    await navigator.clipboard.writeText(currentSessionId);
+  } catch (err) {
+    // Fallback for browsers without clipboard API support
+    const tempInput = document.createElement('input');
+    tempInput.value = currentSessionId;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+  }
+  const original = copySessionBtn.textContent;
+  copySessionBtn.textContent = 'Copied';
+  copySessionBtn.disabled = true;
+  setTimeout(() => {
+    copySessionBtn.textContent = original;
+    copySessionBtn.disabled = false;
+  }, 1500);
+});
+
 // ---- Master actions ----
 startGameBtn.addEventListener('click', () => {
   const question = questionInput.value.trim();
   const answer = answerInput.value.trim();
+  const hint = hintInput.value.trim();
   if (!question || !answer) {
     logMessage('Enter both a question and an answer.');
     return;
   }
-  socket.emit('start_game', { sessionId: currentSessionId, question, answer });
+  socket.emit('start_game', { sessionId: currentSessionId, question, answer, hint });
+  hintInput.value = '';
 });
 
 // ---- Player actions ----
@@ -117,6 +144,11 @@ guessBtn.addEventListener('click', () => {
   if (!guess) return;
   socket.emit('submit_answer', { sessionId: currentSessionId, guess });
   guessInput.value = '';
+});
+
+hintBtn.addEventListener('click', () => {
+  socket.emit('reveal_hint', { sessionId: currentSessionId });
+  hintBtn.disabled = true;
 });
 
 // ---- Socket event listeners ----
@@ -145,7 +177,14 @@ socket.on('error_message', (data) => {
 socket.on('game_started', (data) => {
   masterControls.classList.add('hidden');
   guessControls.classList.remove('hidden');
+  hintBtn.disabled = false;
+  hintBtn.classList.toggle('hidden', !data.hasHint);
   logMessage(`Game started! Question: ${data.question}`);
+});
+
+socket.on('hint_revealed', (data) => {
+  logMessage(`Hint: ${data.hint}`);
+  hintBtn.classList.add('hidden');
 });
 
 socket.on('wrong_guess', (data) => {
@@ -159,6 +198,7 @@ socket.on('out_of_guesses', (data) => {
 
 socket.on('game_ended', (data) => {
   guessControls.classList.add('hidden');
+  hintBtn.classList.add('hidden');
   if (data.winner) {
     logMessage(`${data.winner} guessed correctly! Answer: ${data.answer}`);
   } else {

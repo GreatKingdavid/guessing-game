@@ -16,6 +16,7 @@ function buildSession(sessionId, masterSocketId, masterName) {
     status: 'waiting', // waiting | in_progress | ended
     question: null,
     answer: null,
+    hint: null,
     attempts: {},       // socketId -> count
     locked: false,
     timer: null
@@ -57,6 +58,7 @@ function rotateGameMaster(io, session) {
   session.status = 'waiting';
   session.question = null;
   session.answer = null;
+  session.hint = null;
   session.attempts = {};
   session.locked = false;
 

@@ -186,6 +186,32 @@ button.primary:active,
   letter-spacing: 0.04em;
 }
 
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+#copy-session-btn {
+  background: rgba(0, 113, 227, 0.1);
+  color: var(--blue);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+#copy-session-btn:hover {
+  background: rgba(0, 113, 227, 0.18);
+}
+
+#copy-session-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
 .game-header button {
   background: rgba(255, 59, 48, 0.1);
   color: var(--red);
@@ -198,8 +224,18 @@ button.primary:active,
   transition: background 0.15s ease;
 }
 
-.game-header button:hover {
+#leave-btn:hover {
   background: rgba(255, 59, 48, 0.18);
+}
+
+button.secondary {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: var(--text) !important;
+  margin-top: 4px;
+}
+
+button.secondary:hover {
+  background: rgba(0, 0, 0, 0.09) !important;
 }
 
 .game-body {
