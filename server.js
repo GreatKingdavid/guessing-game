@@ -1,12 +1,15 @@
-const express = require('express');
-const path = require('path');
+const http = require('http');
+const { Server } = require('socket.io');
 
-const app = express();
+const app = require('./app');
+const registerGameSocket = require('./sockets/gameSocket');
 
-app.use(express.static(path.join(__dirname, 'public')));
+const server = http.createServer(app);
+const io = new Server(server);
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
+registerGameSocket(io);
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
-
-module.exports = app;
