@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guessing Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <section id="lobby-screen">
+      <h1>Guessing Game</h1>
+
+      <div class="lobby-card">
+        <h2>Create a session</h2>
+        <input id="create-name" type="text" placeholder="Your name" />
+        <button id="create-btn">Create Session</button>
+      </div>
+
+      <div class="lobby-card">
+        <h2>Join a session</h2>
+        <input id="join-session-id" type="text" placeholder="Session ID" />
+        <input id="join-name" type="text" placeholder="Your name" />
+        <button id="join-btn">Join Session</button>
+      </div>
+
+      <p id="lobby-error" class="error"></p>
+    </section>
+
+    <section id="game-screen" class="hidden">
+      <div class="game-header">
+        <h2>Session: <span id="session-id-display"></span></h2>
+        <button id="leave-btn">Leave</button>
+      </div>
+
+      <div class="game-body">
+        <div class="players-panel">
+          <h3>Players</h3>
+          <ul id="players-list"></ul>
+        </div>
+
+        <div class="chat-panel">
+          <div id="chat-log"></div>
+
+          <div id="master-controls" class="hidden">
+            <h3>You are the Game Master</h3>
+            <input id="question-input" type="text" placeholder="Question" />
+            <input id="answer-input" type="text" placeholder="Answer" />
+            <button id="start-game-btn">Start Game</button>
+          </div>
+
+          <div id="guess-controls" class="hidden">
+            <input id="guess-input" type="text" placeholder="Your guess" />
+            <button id="guess-btn">Submit Guess</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>

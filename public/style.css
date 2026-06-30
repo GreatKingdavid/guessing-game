@@ -1,0 +1,108 @@
+* { box-sizing: border-box; }
+
+body {
+  font-family: system-ui, sans-serif;
+  background: #f4f5f7;
+  margin: 0;
+  padding: 24px;
+  color: #222;
+}
+
+.hidden { display: none !important; }
+
+#lobby-screen {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.lobby-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.lobby-card input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.lobby-card button, #master-controls button, #guess-controls button {
+  width: 100%;
+  padding: 8px;
+  background: #4a5cff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.error {
+  color: #c0392b;
+  font-weight: bold;
+}
+
+#game-screen {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.game-body {
+  display: flex;
+  gap: 16px;
+}
+
+.players-panel {
+  width: 200px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.players-panel ul {
+  list-style: none;
+  padding: 0;
+}
+
+.chat-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#chat-log {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  height: 320px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+#chat-log p {
+  margin: 4px 0;
+}
+
+#master-controls, #guess-controls {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+#master-controls input, #guess-controls input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
